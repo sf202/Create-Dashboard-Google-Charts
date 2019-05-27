@@ -1,0 +1,144 @@
+
+<html>
+<head>
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+// Load the Visualization API and the controls package.
+      google.charts.load('current', {'packages':['corechart', 'controls']});
+
+  google.charts.setOnLoadCallback(drawSheetName);
+
+   function drawSheetName() {
+/*Santiago Fleiderman
+CSC 4730
+06/18/2017 
+Google Chrome
+*/
+// rows 1-10
+      var queryString = encodeURIComponent('SELECT C, D LIMIT 10'); // rows 1 though 10
+
+      var query = new google.visualization.Query(
+      'https://docs.google.com/spreadsheets/d/1Yjg20TA_quJXDs1ATAjoKkMgYaTSkfm3PXJAou7gf-Y/gviz/tq?gid=0&headers=1&tq=' + queryString);
+      query.send(handleSampleDataQueryResponse);
+    }
+
+    function handleSampleDataQueryResponse(response) {
+      if (response.isError()) {
+        alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+        return;
+      }
+
+      var data = response.getDataTable();
+	  
+//      var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+// chart.draw(data, { height: 400 });
+    
+
+
+
+
+
+	// Creates Graph
+        var dashboard = new google.visualization.Dashboard(
+            document.getElementById('dashboard_div'));
+			
+							// Creates the CONTROL
+        // Create a range slider, passing some options
+        var donutRangeSlider = new google.visualization.ControlWrapper({
+          'controlType': 'NumberRangeFilter',
+          'containerId': 'filter_div',
+          'options': {
+            'filterColumnLabel': 'Diameter'
+          }
+        });
+
+        // Create a pie chart, passing some options
+        var pieChart = new google.visualization.ChartWrapper({
+          'chartType': 'PieChart',
+          'containerId': 'chart_div1',
+          'options': {
+            'width': 600,
+            'height': 400,
+            'pieSliceText': 'value',
+            'legend': 'left'
+          }
+        });
+
+	
+		
+		
+		
+		
+		
+		 var columnChart = new google.visualization.ChartWrapper({
+          'chartType': 'ColumnChart',
+          'containerId': 'chart_div2',
+          'options': {
+            'width': 700,
+            'height': 400,
+            'pieSliceText': 'value',
+            'legend': 'right'
+          }
+        });
+		
+		
+		
+		
+		
+			 var barChart = new google.visualization.ChartWrapper({
+          'chartType': 'BarChart',
+          'containerId': 'chart_div',
+          'options': {
+            'width': 700,
+            'height': 400,
+            'pieSliceText': 'value',
+            'legend': 'top'
+          }
+        });
+		
+		
+		
+		
+		
+
+
+
+
+
+
+
+
+
+        // Establish dependencies, declaring that 'filter' drives 'pieChart',
+        // so that the pie chart will only display entries that are let through
+        // given the chosen slider range.
+        dashboard.bind(donutRangeSlider, [pieChart,columnChart,barChart]);
+
+        // Draw the dashboard.Before the draw and Bind
+        dashboard.draw(data);
+      }
+
+
+
+
+    </script>
+  </head>
+  
+  
+
+ <body>
+<p><font size="60">Pizza Diameter Graph!</font></p>
+    <!--Div that will hold the dashboard-->
+    <div id="dashboard_div">
+	    <div id="dashboard_div">
+    <div id="dashboard_div">
+
+      <!--Divs that will hold each control and chart-->
+      <div id="filter_div"></div>
+<div id="chart_div1"></div>
+      <div id="chart_div"></div>
+<div id="chart_div2"></div>
+    </div>
+  </body>
+</html>
